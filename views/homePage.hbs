@@ -1,0 +1,35 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+  </head>
+  <body>
+
+    <form class="form" method="post" action="/finalpage" style="display:none;">
+      <input type="hidden" id="uid" name="uid" />
+      <input type="hidden" id="successurl" name="successurl" value="{{successurl}}" />
+      <input type="hidden" id="failureurl" name="failureurl" value="{{failureurl}}" />
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+        (async () => {
+          const fpPromise = import(
+            "https://openfpcdn.io/fingerprintjs/v3"
+          ).then((FingerprintJS) => FingerprintJS.load());
+          const fp = await fpPromise;
+          const result = await fp.get();
+          console.log(result.visitorId);
+          let uid = document.querySelector("#uid");
+          uid.setAttribute("value", result.visitorId);
+          document.querySelector(".form").submit();
+        })();
+      });
+    </script>
+
+        {{! <script type="module" src="/js/index.js"></script> }}
+
+  </body>
+</html>
